@@ -36,12 +36,15 @@ def main():
     for i in range(n):
         labirinto = gera_labirinto()
 
-        capturou = caminha_labirinto(labirinto, 0, 0, False)
-
-        if capturou:
-            print "COPS"
-        else:
+        if labirinto[0][0] == "1" or labirinto[4][4] == "1" or (labirinto[3][4] == "1" and labirinto[4][3] == "1"):
             print "ROBBERS"
+        else:
+            capturou = caminha_labirinto(labirinto, 0, 0, False)
+
+            if capturou:
+                print "COPS"
+            else:
+                print "ROBBERS"
 
         posicoes_visitadas.clear()
 

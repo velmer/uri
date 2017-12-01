@@ -30,29 +30,17 @@ def caminha_labirinto(labirinto, linha, coluna, capturou):
 
 posicoes_visitadas = {}
 
-import random
-
-def gera_matriz():
-    _matriz = []
-
-    for i in range(5):
-        linha = []
-        for j in range(5):
-            if (random.random() < 0.4):
-                linha.append("1")
-            else:
-                linha.append("0")
-
-        _matriz.append(linha)
-    
-    return _matriz
-
-def imprime_matriz(matriz):
-    for j in range(5):
-        print " ".join(matriz[j])
+f = open("labirintos_sem_espaco.txt", "r")
 
 def main():
-    # n = int(raw_input())
+
+    labirinto = []
+
+    while True:
+        try:
+            for x in range(5):
+                labirinto.append(f.readline().split())
+
 
     for i in range(100):
         labirinto = gera_matriz()
