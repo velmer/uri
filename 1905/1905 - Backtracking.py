@@ -1,52 +1,41 @@
 TAMANHO_LABIRINTO = 5
+VISITADO = '2'
 
-def gera_labirinto():
-    matriz = []
+def caminha_labirinto(linha, coluna):
+    if (linha >= TAMANHO_LABIRINTO
+        or coluna >= TAMANHO_LABIRINTO
+        or linha <= -1
+        or coluna <= -1
+        or labirinto[linha][coluna] == '1'
+        or labirinto[linha][coluna] == VISITADO):
+        return
     
-    for i in range(TAMANHO_LABIRINTO):
-        matriz.append(raw_input().split())
+    labirinto[linha][coluna] = VISITADO
 
-    return matriz
+    caminha_labirinto(linha+1, coluna)
+    caminha_labirinto(linha, coluna+1)
+    caminha_labirinto(linha, coluna-1)
+    caminha_labirinto(linha-1, coluna)
 
-def caminha_labirinto(labirinto, linha, coluna, capturou):
-    if capturou or ((linha, coluna) == (4, 4) and labirinto[linha][coluna] == "0"): return True
-    if (linha >= TAMANHO_LABIRINTO or coluna >= TAMANHO_LABIRINTO or linha <= -1 or coluna <= -1): return False
-    if (linha, coluna) in posicoes_visitadas:
-        return capturou
+n = int(raw_input())
+
+for i in range(n):
+    labirinto = []
+
+    while len(labirinto) < 5:
+        linha = raw_input().split()
+
+        if len(linha) > 0:
+            labirinto.append(linha)
+    
+    if labirinto[0][0] == '1' or labirinto[4][4] == '1' or (labirinto[3][4] == '1' and labirinto[4][3] == '1'):
+         print "ROBBERS"
     else:
-        posicoes_visitadas[(linha, coluna)] = True
-    if (labirinto[linha][coluna] == "1"): return False
-    
-    i = coluna
+        caminha_labirinto(0, 0)
 
-    while (i < TAMANHO_LABIRINTO and not capturou):
-        capturou = caminha_labirinto(labirinto, linha+1, coluna, capturou)
-        if not capturou: capturou = caminha_labirinto(labirinto, linha, coluna+1, capturou)
-        if not capturou: capturou = caminha_labirinto(labirinto, linha, coluna-1, capturou)
+        capturou = labirinto[4][4] == VISITADO
 
-        i += 1
-    
-    return capturou
-
-posicoes_visitadas = {}
-
-def main():
-    n = int(raw_input())
-
-    for i in range(n):
-        labirinto = gera_labirinto()
-
-        if labirinto[0][0] == "1" or labirinto[4][4] == "1" or (labirinto[3][4] == "1" and labirinto[4][3] == "1"):
-            print "ROBBERS"
+        if capturou:
+            print "COPS"
         else:
-            capturou = caminha_labirinto(labirinto, 0, 0, False)
-
-            if capturou:
-                print "COPS"
-            else:
-                print "ROBBERS"
-
-        posicoes_visitadas.clear()
-
-if __name__ == "__main__":
-    main()
+            print "ROBBERS"
